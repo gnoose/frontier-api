@@ -1,12 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
-@Controller()
+import { AppService } from './app.service';
+import { HealthResponse } from './common/models/health.response';
+
+@Controller('api/v0')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('health')
+  @ApiOperation({ summary: 'Get if server is running or not' })
+  @ApiOkResponse({ type: () => HealthResponse })
+  health(): HealthResponse {
+    return new HealthResponse();
   }
 }
